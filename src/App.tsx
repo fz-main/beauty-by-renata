@@ -4,7 +4,7 @@ import MainPage from './MainPage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/beauty-by-renata">
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/admin" element={<AdminPage />} />
