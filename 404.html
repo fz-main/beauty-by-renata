@@ -4,25 +4,26 @@
     <meta charset="utf-8">
     <title>Beauty by Renata</title>
     <script>
-      // GitHub Pages SPA redirect
-      var repo = '/beauty-by-renata';
-      var segCount = 1;
-      var loc = window.location;
+      (function() {
+        var repo = '/beauty-by-renata';
+        var segCount = 1;
+        var loc = window.location;
 
-      // If URL doesn't start with repo path, redirect to repo root
-      if (loc.pathname.indexOf(repo + '/') !== 0) {
-        loc.replace(repo + loc.pathname);
-        return;
-      }
+        // If URL doesn't start with repo path, redirect to repo root
+        if (loc.pathname.indexOf(repo + '/') !== 0) {
+          loc.replace(repo + loc.pathname);
+          return;
+        }
 
-      // Standard SPA redirect: encode the path after repo prefix as query params
-      loc.replace(
-        loc.protocol + '//' + loc.hostname + (loc.port ? ':' + loc.port : '') +
-        loc.pathname.split('/').slice(0, 1 + segCount).join('/') + '/?/' +
-        loc.pathname.slice(1).split('/').slice(segCount).join('/').replace(/&/g, '~and~') +
-        (loc.search ? '&' + loc.search.slice(1).replace(/&/g, '~and~') : '') +
-        loc.hash
-      );
+        // Standard SPA redirect: encode the path after repo prefix as query params
+        loc.replace(
+          loc.protocol + '//' + loc.hostname + (loc.port ? ':' + loc.port : '') +
+          loc.pathname.split('/').slice(0, 1 + segCount).join('/') + '/?/' +
+          loc.pathname.slice(1).split('/').slice(segCount).join('/').replace(/&/g, '~and~') +
+          (loc.search ? '&' + loc.search.slice(1).replace(/&/g, '~and~') : '') +
+          loc.hash
+        );
+      })();
     </script>
   </head>
   <body></body>
