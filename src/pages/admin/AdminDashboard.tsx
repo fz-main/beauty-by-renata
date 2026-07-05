@@ -12,7 +12,7 @@ const STATUS_COLORS: Record<Booking['status'], string> = {
 
 type Tab = 'bookings' | 'services' | 'about' | 'contacts';
 
-export const AdminDashboard: React.FC = () => {
+export const AdminDashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<Tab>('bookings');
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -105,8 +105,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('admin_logged_in');
-    window.location.reload();
+    onLogout();
   };
 
   const tabs: { id: Tab; label: string }[] = [

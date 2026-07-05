@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 
 const ADMIN_PASSWORD = 'admin123';
 
-export const AdminLogin: React.FC = () => {
+interface Props {
+  onLogin: () => void;
+}
+
+export const AdminLogin: React.FC<Props> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
     if (password === ADMIN_PASSWORD) {
       localStorage.setItem('admin_logged_in', 'true');
-      window.location.reload();
+      onLogin();
     } else {
       setError('Špatné heslo');
     }
-    setLoading(false);
   };
 
   return (
@@ -29,9 +29,9 @@ export const AdminLogin: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-[#0a0a0a] border border-white/20 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-[#e5d3b3] focus:border-transparent" required />
           {error && <p className="text-red-400 text-sm">{error}</p>}
-          <button type="submit" disabled={loading}
-            className="w-full bg-[#e5d3b3] text-black py-2 rounded-lg font-medium hover:bg-white transition-colors disabled:opacity-50">
-            {loading ? 'Přihlašování...' : 'Přihlásit se'}
+          <button type="submit"
+            className="w-full bg-[#e5d3b3] text-black py-2 rounded-lg font-medium hover:bg-white transition-colors">
+            Přihlásit se
           </button>
         </form>
       </div>
