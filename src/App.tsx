@@ -7,11 +7,10 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="admin" element={<AdminPage />} />
       </Routes>
     </HashRouter>
   );
 }
 
 export default App;
-
