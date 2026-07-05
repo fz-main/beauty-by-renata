@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+interface Booking {
+  id: string;
+  customer_name: string;
+  customer_phone: string;
+  service_name: string;
+  booking_date: string;
+  start_time: string;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  created_at: string;
+}
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: '#facc15',
+  confirmed: '#4ade80',
+  cancelled: '#f87171',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: 'Čeká',
+  confirmed: 'Potvrzena',
+  cancelled: 'Zrušena',
+};
 
 export const AdminPage: React.FC = () => {
-  const [loggedIn, setLoggedIn] = useState(
-    localStorage.getItem('admin_logged_in') === 'true'
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState<'services' | 'about' | 'contacts'>('services');
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [filterDate, setFilterDate] = useState('');
 
-  // Services
-  const [services, setServices] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('adminServices') || '[]'); } catch { return []; }
-  });
-  const [editIdx, setEditIdx] = useState<number | null>(null);
-  const [newService, setNewService] = useState({ title: '', price: '', category: '', desc: '' });
+  useEffect(() => {
+    if (localStorage.getItem('admin_logged_in') === 'true') {
+      setLoggedIn(true);
+    }
+  }, []);
 
-  // About
-  const [aboutText, setAboutText] = useState(() => localStorage.getItem('adminAbout') || '');
+  useEffect(() => {
+    if (!loggedIn) return;
+    try {
+      setBookings(JSON.parse(localStorage.getItem('bibenglow_bookings') || '[]'));
+    } catch { setBookings([]); }
+  }, [loggedIn]);
 
-  // Contacts
-  const [contacts, setContacts] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('adminContacts') || '{}'); } catch { return {}; }
-  });
+  const saveBookings = (b: Booking[]) => {
+    setBookings(b);
+    localStorage.setItem('bibenglow_bookings', JSON.stringify(b));
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,23 +61,32 @@ export const AdminPage: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('admin_logged_in');
     setLoggedIn(false);
+    setPassword('');
   };
 
-  const saveServices = (s: typeof services) => {
-    setServices(s);
-    localStorage.setItem('adminServices', JSON.stringify(s));
+  const updateStatus = (id: string, status: Booking['status']) => {
+    saveBookings(bookings.map(b => b.id === id ? { ...b, status } : b));
   };
 
+  const deleteBooking = (id: string) => {
+    if (confirm('Smazat rezervaci?')) {
+      saveBookings(bookings.filter(b => b.id !== id));
+    }
+  };
+
+  const filtered = filterDate ? bookings.filter(b => b.booking_date === filterDate) : bookings;
+
+  // Login screen
   if (!loggedIn) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#fff' }}>
-        <div style={{ background: '#1a1a1a', padding: 32, borderRadius: 16, width: '100%', maxWidth: 400, border: '1px solid rgba(255,255,255,0.1)' }}>
-          <h1 style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 24 }}>Administrace</h1>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#fff', padding: 16 }}>
+        <div style={{ background: '#1a1a1a', padding: 32, borderRadius: 16, width: '100%', maxWidth: 380, border: '1px solid rgba(255,255,255,0.1)' }}>
+          <h1 style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 24 }}>Přihlášení</h1>
           <form onSubmit={handleLogin}>
-            <input type="password" placeholder="Heslo" value={password} onChange={e => setPassword(e.target.value)}
-              style={{ width: '100%', padding: '10px 12px', background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, color: '#fff', marginBottom: 12, boxSizing: 'border-box' }} />
+            <input type="password" placeholder="Heslo" value={password} onChange={e => setPassword(e.target.value)} autoFocus
+              style={{ width: '100%', padding: '12px', background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, color: '#fff', marginBottom: 12, boxSizing: 'border-box', fontSize: 16 }} />
             {error && <p style={{ color: '#f87171', fontSize: 14, marginBottom: 12 }}>{error}</p>}
-            <button type="submit" style={{ width: '100%', padding: '10px 0', background: '#e5d3b3', color: '#000', border: 'none', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}>
+            <button type="submit" style={{ width: '100%', padding: '12px', background: '#e5d3b3', color: '#000', border: 'none', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 16 }}>
               Přihlásit se
             </button>
           </form>
@@ -61,98 +95,70 @@ export const AdminPage: React.FC = () => {
     );
   }
 
+  // Dashboard
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: 24 }}>
+    <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: 16 }}>
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <h1 style={{ fontSize: 24, fontWeight: 'bold' }}>Administrace</h1>
-          <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer' }}>Odhlásit</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 8 }}>
+          <h1 style={{ fontSize: 20, fontWeight: 'bold' }}>Rezervace</h1>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <input type="date" value={filterDate} onChange={e => setFilterDate(e.target.value)}
+              style={{ padding: '6px 10px', background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, color: '#fff', fontSize: 14 }} />
+            {filterDate && <button onClick={() => setFilterDate('')} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer' }}>✕</button>}
+            <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', fontSize: 14 }}>Odhlásit</button>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
-          {(['services', 'about', 'contacts'] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              style={{ padding: '8px 16px', borderRadius: 8, border: 'none', fontWeight: 500, cursor: 'pointer',
-                background: activeTab === tab ? '#e5d3b3' : 'rgba(255,255,255,0.1)', color: activeTab === tab ? '#000' : '#fff' }}>
-              {tab === 'services' ? 'Služby' : tab === 'about' ? 'O mně' : 'Kontakty'}
-            </button>
-          ))}
-        </div>
-
-        {activeTab === 'services' && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-              <h2>Správa služeb</h2>
-              <button onClick={() => { setEditIdx(-1); setNewService({ title: '', price: '', category: '', desc: '' }); }}
-                style={{ padding: '8px 16px', background: '#e5d3b3', color: '#000', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
-                + Přidat
-              </button>
-            </div>
-
-            {editIdx !== null && (
-              <div style={{ background: '#1a1a1a', padding: 16, borderRadius: 12, marginBottom: 16, border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                  <input placeholder="Název" value={editIdx === -1 ? newService.title : (services[editIdx]?.title || '')}
-                    onChange={e => editIdx === -1 ? setNewService({ ...newService, title: e.target.value }) : null}
-                    style={{ padding: 8, background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, color: '#fff' }} />
-                  <input placeholder="Cena" value={editIdx === -1 ? newService.price : (services[editIdx]?.price || '')}
-                    onChange={e => editIdx === -1 ? setNewService({ ...newService, price: e.target.value }) : null}
-                    style={{ padding: 8, background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, color: '#fff' }} />
-                  <input placeholder="Kategorie" value={editIdx === -1 ? newService.category : (services[editIdx]?.category || '')}
-                    onChange={e => editIdx === -1 ? setNewService({ ...newService, category: e.target.value }) : null}
-                    style={{ padding: 8, background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, color: '#fff', gridColumn: 'span 2' }} />
-                  <input placeholder="Popis" value={editIdx === -1 ? newService.desc : (services[editIdx]?.desc || '')}
-                    onChange={e => editIdx === -1 ? setNewService({ ...newService, desc: e.target.value }) : null}
-                    style={{ padding: 8, background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, color: '#fff', gridColumn: 'span 2' }} />
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', color: '#6b7280', padding: 40 }}>
+            {filterDate ? 'Žádné rezervace na tento den' : 'Žádné rezervace'}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {filtered.map(b => (
+              <div key={b.id} style={{ background: '#1a1a1a', borderRadius: 12, padding: 16, border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 16 }}>{b.customer_name}</div>
+                    <a href={`tel:${b.customer_phone}`} style={{ color: '#e5d3b3', textDecoration: 'none', fontSize: 14 }}>{b.customer_phone}</a>
+                  </div>
+                  <span style={{ padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: `${STATUS_COLORS[b.status]}22`, color: STATUS_COLORS[b.status] }}>
+                    {STATUS_LABELS[b.status]}
+                  </span>
                 </div>
-                <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-                  <button onClick={() => {
-                    if (editIdx === -1) { saveServices([...services, newService]); }
-                    setEditIdx(null);
-                  }} style={{ padding: '6px 16px', background: '#16a34a', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Uložit</button>
-                  <button onClick={() => setEditIdx(null)} style={{ padding: '6px 16px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Zrušit</button>
+                <div style={{ fontSize: 14, color: '#d1d5db', marginBottom: 4 }}>{b.service_name}</div>
+                <div style={{ fontSize: 14, color: '#9ca3af', marginBottom: 12 }}>{b.booking_date} v {b.start_time}</div>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  {b.status !== 'confirmed' && (
+                    <button onClick={() => updateStatus(b.id, 'confirmed')}
+                      style={{ padding: '6px 14px', background: '#166534', color: '#4ade80', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>
+                      Potvrdit
+                    </button>
+                  )}
+                  {b.status !== 'cancelled' && (
+                    <button onClick={() => updateStatus(b.id, 'cancelled')}
+                      style={{ padding: '6px 14px', background: 'rgba(239,68,68,0.15)', color: '#f87171', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>
+                      Zrušit
+                    </button>
+                  )}
+                  <button onClick={() => deleteBooking(b.id)}
+                    style={{ padding: '6px 14px', background: 'rgba(255,255,255,0.05)', color: '#6b7280', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 13, marginLeft: 'auto' }}>
+                    Smazat
+                  </button>
                 </div>
-              </div>
-            )}
-
-            {services.map((s: any, i: number) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1a1a1a', padding: '12px 16px', borderRadius: 8, marginBottom: 8, border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div>
-                  {s.category && <span style={{ fontSize: 12, color: '#e5d3b3', marginRight: 8 }}>{s.category}</span>}
-                  <span>{s.title}</span>
-                  <span style={{ color: '#9ca3af', marginLeft: 8 }}>{s.price}</span>
-                </div>
-                <button onClick={() => saveServices(services.filter((_: any, j: number) => j !== i))}
-                  style={{ background: 'rgba(239,68,68,0.2)', color: '#f87171', border: 'none', borderRadius: 4, padding: '4px 8px', cursor: 'pointer', fontSize: 12 }}>Smazat</button>
               </div>
             ))}
           </div>
         )}
 
-        {activeTab === 'about' && (
-          <div>
-            <h2 style={{ marginBottom: 12 }}>Text "O mně"</h2>
-            <textarea value={aboutText} onChange={e => setAboutText(e.target.value)}
-              style={{ width: '100%', height: 250, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', padding: 12, borderRadius: 12, color: '#fff', resize: 'vertical' }} />
-            <button onClick={() => { localStorage.setItem('adminAbout', aboutText); alert('Uloženo'); }}
-              style={{ marginTop: 12, padding: '8px 16px', background: '#e5d3b3', color: '#000', border: 'none', borderRadius: 8, cursor: 'pointer' }}>Uložit</button>
+        <div style={{ marginTop: 24, padding: 16, background: '#1a1a1a', borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)' }}>
+          <h3 style={{ fontSize: 14, color: '#9ca3af', marginBottom: 8 }}>Statistiky</h3>
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+            <div><span style={{ fontSize: 24, fontWeight: 'bold' }}>{bookings.length}</span><br /><span style={{ fontSize: 12, color: '#6b7280' }}>Celkem</span></div>
+            <div><span style={{ fontSize: 24, fontWeight: 'bold', color: '#facc15' }}>{bookings.filter(b => b.status === 'pending').length}</span><br /><span style={{ fontSize: 12, color: '#6b7280' }}>Čekajících</span></div>
+            <div><span style={{ fontSize: 24, fontWeight: 'bold', color: '#4ade80' }}>{bookings.filter(b => b.status === 'confirmed').length}</span><br /><span style={{ fontSize: 12, color: '#6b7280' }}>Potvrzených</span></div>
           </div>
-        )}
-
-        {activeTab === 'contacts' && (
-          <div>
-            <h2 style={{ marginBottom: 12 }}>Kontakty</h2>
-            <div style={{ display: 'grid', gap: 8, maxWidth: 500 }}>
-              {['address', 'phone', 'email', 'hours', 'facebook', 'instagram'].map(field => (
-                <input key={field} placeholder={field} value={contacts[field] || ''}
-                  onChange={e => setContacts({ ...contacts, [field]: e.target.value })}
-                  style={{ padding: 8, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#fff' }} />
-              ))}
-            </div>
-            <button onClick={() => { localStorage.setItem('adminContacts', JSON.stringify(contacts)); alert('Uloženo'); }}
-              style={{ marginTop: 12, padding: '8px 16px', background: '#e5d3b3', color: '#000', border: 'none', borderRadius: 8, cursor: 'pointer' }}>Uložit</button>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
