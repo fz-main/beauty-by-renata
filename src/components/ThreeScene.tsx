@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
@@ -40,26 +40,51 @@ function CameraController({ stage, activeService, isTransitioning }: {
   return null;
 }
 
+function ParticleField() {
+  const positions = useMemo(() => {
+    const arr = new Float32Array(3000);
+    for (let i = 0; i < 3000; i++) {
+      arr[i] = (Math.random() - 0.5) * 40;
+    }
+    return arr;
+  }, []);
+
+  return (
+    <points>
+      <bufferGeometry>
+        <float32BufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial size={0.05} color="#e5d3b3" transparent opacity={0.3} />
+    </points>
+  );
+}
+
 export default function ThreeScene({ stage, activeService, isTransitioning }: {
   stage: number;
   activeService: Service | null;
   isTransitioning: boolean;
   onServiceClick: (service: Service) => void;
 }) {
+  const [hasWebGL, setHasWebGL] = useState(true);
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) setHasWebGL(false);
+    } catch {
+      setHasWebGL(false);
+    }
+  }, []);
+
+  if (!hasWebGL) return null;
+
   return (
     <Canvas>
       <PerspectiveCamera makeDefault position={[0, 30, 40]} fov={45} />
       <ambientLight intensity={0.2} />
       <CameraController stage={stage} activeService={activeService} isTransitioning={isTransitioning} />
-      <points>
-        <bufferGeometry>
-          <float32BufferAttribute
-            attach="attributes-position"
-            args={[new Float32Array(3000).map(() => (Math.random() - 0.5) * 40), 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial size={0.05} color="#e5d3b3" transparent opacity={0.3} />
-      </points>
+      <ParticleField />
     </Canvas>
   );
 }
