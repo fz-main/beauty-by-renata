@@ -5,15 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/beauty-by-renata/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Profesionální kosmetická ošetření v Brně: mikrojehličkování, chemický peeling, kosmetická ošetření, maderoterapie" />
-    <title>Beauty by Renata – Kosmetické studio Brno</title>
+    <title>Beauty by Renata – Kosmetické studio Brno</title>
     <script>
-      // GitHub Pages SPA redirect
-      (function(l) {
-        if (l.search[1] === '/') {
-          document.redirect = l.search.slice(1) + l.hash;
-          history.replaceState(null, null, l.search.slice(1) + l.hash);
+      // GitHub Pages SPA redirect: convert ?/path~to~page back to real URL
+      (function() {
+        var repo = '/beauty-by-renata';
+        var params = new URLSearchParams(window.location.search);
+        var spath = params.get('');
+        if (spath) {
+          var realPath = repo + '/' + spath.replace(/~/g, '/');
+          history.replaceState(null, '', realPath + window.location.hash);
         }
-      }(window.location))
+      })();
     </script>
     <script type="module" crossorigin src="/beauty-by-renata/assets/app.js"></script>
     <link rel="stylesheet" crossorigin href="/beauty-by-renata/assets/app.css">
@@ -22,4 +25,3 @@
     <div id="root"></div>
   </body>
 </html>
-
