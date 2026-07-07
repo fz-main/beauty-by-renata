@@ -31,7 +31,6 @@ function MainApp() {
   const bgVideoRef = useRef<HTMLVideoElement>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showHeroVideo, setShowHeroVideo] = useState(false);
-  
   const closeLightbox = () => setLightboxImage(null);
 
   const showCard = useCallback(() => {
@@ -67,7 +66,6 @@ function MainApp() {
       const now = Date.now();
       if (now - lastScrollTime.current < COOLDOWN) return;
       if (stage === STAGES.INTRO && e.deltaY > 0) {
-        setHeroFading(true);
         setShowHeroVideo(true);
         lastScrollTime.current = now;
       } else if (stage === STAGES.MENU && e.deltaY < 0) {
@@ -93,7 +91,6 @@ function MainApp() {
       const deltaY = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(deltaY) > 50) {
         if (stage === STAGES.INTRO && deltaY > 0) {
-          setHeroFading(true);
           setShowHeroVideo(true);
           lastScrollTime.current = now;
         } else if (stage === STAGES.MENU && deltaY < 0) {
@@ -131,7 +128,7 @@ function MainApp() {
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
         <div className="fixed inset-0 z-[200] bg-black">
-          <video autoPlay muted playsInline onEnded={() => { setShowHeroVideo(false); setStage(STAGES.MENU); }} className="w-full h-full object-cover">
+          <video autoPlay muted playsInline onEnded={() => { setStage(STAGES.MENU); setTimeout(() => setShowHeroVideo(false), 300); }} className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
           
@@ -151,18 +148,10 @@ function MainApp() {
       {bgVideoUrl && stage === STAGES.SERVICE_DETAIL && (<div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden" style={{ transform: 'scale(1.15)' }}><video ref={bgVideoRef} src={bgVideoUrl} muted playsInline className="w-full h-full object-cover" style={{ filter: 'blur(20px)' }} /><div className="absolute inset-0 bg-black/70" /></div>)}
       <AnimatePresence>{showTransition && transitionUrl && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="absolute inset-0 z-[20] pointer-events-none"><TransitionVideo url={transitionUrl} onEnded={showCard} bgVideoRef={bgVideoRef} /></motion.div>)}</AnimatePresence>
       <div className="absolute inset-0 z-10 pointer-events-none">
-        <header className={`absolute top-0 left-0 w-full px-6 py-5 md:px-8 md:py-8 flex justify-between items-center z-50 mix-blend-difference transition-opacity duration-500 ${showHeroVideo ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}><div className="font-monument text-[10px] md:text-xs tracking-[0.2em]">BEAUTY BY RENATA</div><div className="flex items-center gap-3 md:gap-4 pointer-events-auto">{stage === STAGES.MENU && (<button onClick={() => setStage(STAGES.ABOUT)} className="lg:hidden font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">{t.aboutLabel}</button>)}<div className="flex items-center gap-1">{langs.map((l) => (<button key={l} onClick={() => setLang(l)} className={`font-monument text-[9px] md:text-[10px] tracking-wider px-2 py-1 rounded-full transition-all ${lang === l ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}>{l.toUpperCase()}</button>))}</div><div className="font-montreal text-[10px] md:text-xs uppercase tracking-widest">Brno</div></div></header>
+        <header className={`absolute top-0 left-0 w-full px-6 py-5 md:px-8 md:py-8 flex justify-between items-center z-50 mix-blend-difference transition-opacity duration-300 ${showHeroVideo ? 'opacity-0' : 'opacity-100'}`}><div className="font-monument text-[10px] md:text-xs tracking-[0.2em]">BEAUTY BY RENATA</div><div className="flex items-center gap-3 md:gap-4 pointer-events-auto">{stage === STAGES.MENU && (<button onClick={() => setStage(STAGES.ABOUT)} className="lg:hidden font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">{t.aboutLabel}</button>)}<div className="flex items-center gap-1">{langs.map((l) => (<button key={l} onClick={() => setLang(l)} className={`font-monument text-[9px] md:text-[10px] tracking-wider px-2 py-1 rounded-full transition-all ${lang === l ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}>{l.toUpperCase()}</button>))}</div><div className="font-montreal text-[10px] md:text-xs uppercase tracking-widest">Brno</div></div></header>
         
-            <AnimatePresence>
-          {stage === STAGES.INTRO && !showHeroVideo && (
-              <div className="absolute inset-0 z-0">
-                <video autoPlay muted loop playsInline className="w-full h-full object-cover" poster="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4">
-                  <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-black/40" />
-              </div>
-            )}
-            <motion.div key="intro" exit={{ opacity: 0, filter: 'blur(20px)', scale: 1.1 }} transition={{ duration: 1.5, ease: 'easeInOut' }} className="absolute inset-0 flex flex-col items-center justify-center px-4" style={{ opacity: showHeroVideo ? 0 : 1, transition: 'opacity 0.3s ease-out' }}><div className="overflow-hidden flex flex-wrap justify-center">{'BEAUTY BY RENATA'.split('').map((char, i) => (<motion.span key={i} custom={i} variants={letterVariants} initial="hidden" animate="visible" className="text-[12vw] sm:text-[10vw] md:text-[8vw] font-editorial leading-none tracking-tighter">{char}</motion.span>))}</div><motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="font-montreal text-[11px] md:text-sm text-[#a3a3a3] tracking-widest uppercase mt-4 text-center">{t.tagline}</motion.p><motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="absolute bottom-8 md:bottom-12 flex flex-col items-center"><span className="font-montreal text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#a3a3a3] mb-3 md:mb-4">{t.scrollToEnter}</span><div className="w-[1px] h-10 md:h-12 bg-white/20 overflow-hidden relative"><motion.div animate={{ y: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="absolute inset-0 bg-white" /></div><motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => setShowHeroVideo(true)} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button></motion.div></motion.div>)}
+            <AnimatePresence mode="wait">
+          {stage === STAGES.INTRO && !showHeroVideo && (<motion.div key="intro" exit={{ opacity: 0, filter: 'blur(20px)', scale: 1.1 }} transition={{ duration: 1.5, ease: 'easeInOut' }} className="absolute inset-0 flex flex-col items-center justify-center px-4"><div className="overflow-hidden flex flex-wrap justify-center">{'BEAUTY BY RENATA'.split('').map((char, i) => (<motion.span key={i} custom={i} variants={letterVariants} initial="hidden" animate="visible" className="text-[12vw] sm:text-[10vw] md:text-[8vw] font-editorial leading-none tracking-tighter">{char}</motion.span>))}</div><motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="font-montreal text-[11px] md:text-sm text-[#a3a3a3] tracking-widest uppercase mt-4 text-center">{t.tagline}</motion.p><motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="absolute bottom-8 md:bottom-12 flex flex-col items-center"><span className="font-montreal text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#a3a3a3] mb-3 md:mb-4">{t.scrollToEnter}</span><div className="w-[1px] h-10 md:h-12 bg-white/20 overflow-hidden relative"><motion.div animate={{ y: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="absolute inset-0 bg-white" /></div><motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => setShowHeroVideo(true)} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button></motion.div></motion.div>)}
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
             <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto">
               <div className="w-full h-full overflow-y-auto flex flex-col" style={{ touchAction: 'pan-y' }}>
@@ -173,7 +162,7 @@ function MainApp() {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-0.5 text-center px-4 py-3 shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex flex-col items-center gap-0.5 text-center px-4 py-2 shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                   <div className="font-monument text-[8px] tracking-[0.25em] text-[#e5d3b3] uppercase mb-1">{t.contacts?.title || 'Kontakty'}</div>
                   <div className="font-montreal text-[10px] text-white/70">{t.contacts?.address}</div>
                   <div className="font-montreal text-[10px] text-white/70 flex flex-wrap justify-center gap-x-2">
