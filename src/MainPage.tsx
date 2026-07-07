@@ -154,7 +154,9 @@ function MainApp() {
                 <div className="flex-1 px-3 md:px-10 pt-4 md:pt-[200px] pb-4 overflow-y-auto">
                   <div className="flex flex-wrap justify-center gap-x-3 gap-y-3 md:gap-x-8 md:gap-y-8 w-full max-w-6xl mx-auto">
                     {SERVICES.map((srv, i) => (
-                      <MenuButton key={srv.id} service={srv} translatedTitle={t.services[srv.id as keyof typeof t.services]?.title} translatedSubtitle={t.services[srv.id as keyof typeof t.services]?.subtitle} onClick={() => handleServiceClick(srv)} enterLabel={t.enterModule} />
+                      <motion.div key={srv.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.04 }}>
+                        <MenuButton service={srv} translatedTitle={t.services[srv.id as keyof typeof t.services]?.title} translatedSubtitle={t.services[srv.id as keyof typeof t.services]?.subtitle} onClick={() => handleServiceClick(srv)} enterLabel={t.enterModule} />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
