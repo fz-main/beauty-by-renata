@@ -2,13 +2,12 @@ import { useState, useRef } from 'react';
 import type { Translations } from '../lib/i18n';
 
 const galleryItems = [
-  { id: 1, src: 'https://static.wixstatic.com/media/6e5a68_58ff6be540194d249d9df44ad99c2e83~mv2.jpg/v1/fill/w_858,h_566,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/DSC01966_JPG.jpg', alt: 'Interior 1' },
-  { id: 2, src: 'https://res.cloudinary.com/dfh97tdty/image/upload/v1781347513/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-13_134240_irljmw.png', alt: 'Work 1' },
-  { id: 3, src: 'https://res.cloudinary.com/dfh97tdty/image/upload/v1781347513/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-13_133957_fz8rga.png', alt: 'Work 2' },
-  { id: 4, src: 'https://res.cloudinary.com/dfh97tdty/image/upload/v1781347513/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-13_134309_mm1ct8.png', alt: 'Work 3' },
-  { id: 5, src: 'https://res.cloudinary.com/dfh97tdty/image/upload/v1781347513/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-13_134328_mndg3p.png', alt: 'Work 4' },
-  { id: 6, src: 'https://res.cloudinary.com/dfh97tdty/image/upload/v1781347513/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-13_134224_efesrr.png', alt: 'Work 5' },
-  { id: 7, src: 'https://res.cloudinary.com/dfh97tdty/image/upload/v1781347513/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-13_134202_lbbgme.png', alt: 'Work 6' },
+  { id: 1, src: 'https://cdn.prod.website-files.com/66a3872ec3af88d823ea480a/69f89e5cb561f92d0bf4ea0f_E4321A8D-DF74-4114-9549-BD672E0EA8BA_1_201_a.jpeg', alt: 'Kosmetické studio' },
+  { id: 2, src: 'https://cdn.prod.website-files.com/66a3872ec3af88d823ea480a/69f46ab0da264991b2a88d25_IMG_0221-EditNat.jpeg', alt: 'Renata Birjukov' },
+  { id: 3, src: 'https://cdn.prod.website-files.com/66a3872ec3af88d823ea480a/69f78e2c75b2139aee17107b_IMG_9959-Edit.jpeg', alt: 'Přístrojové ošetření' },
+  { id: 4, src: 'https://cdn.prod.website-files.com/66a3872ec3af88d823ea480a/69f78e2cb7fa16b2b89999c8_IMG_9998-Edit.jpeg', alt: 'Ošetření pleti' },
+  { id: 5, src: 'https://cdn.prod.website-files.com/66a3872ec3af88d823ea480a/69f89e5c963df61f9f62fe64_D0A5680C-4156-42CD-AEAE-27B8F05E3D54_1_201_a.jpeg', alt: 'Studio interiér' },
+  { id: 6, src: 'https://cdn.prod.website-files.com/66a3872ec3af88d823ea480a/67c6150b2ff978bed3aa2017_soins_corps.jpg', alt: 'Péče o tělo' },
 ];
 
 interface HelixGalleryProps {
@@ -55,11 +54,8 @@ export default function HelixGallery({ t }: HelixGalleryProps) {
     if (!isSwiping.current) return;
     const deltaX = e.touches[0].clientX - touchStartX.current;
     if (Math.abs(deltaX) > 30) {
-      if (deltaX > 0) {
-        goToPrev();
-      } else {
-        goToNext();
-      }
+      if (deltaX > 0) goToPrev();
+      else goToNext();
       isSwiping.current = false;
     }
   };
@@ -69,69 +65,30 @@ export default function HelixGallery({ t }: HelixGalleryProps) {
   };
 
   return (
-    <div style={{ width: '100%', minHeight: '500px', padding: '40px 0', marginBottom: '20px' }}>
+    <div style={{ width: '100%', padding: '20px 0' }}>
       <div className="text-center mb-6">
         <div className="font-monument text-[9px] tracking-[0.3em] text-[#e5d3b3] uppercase">{t.galleryTitle}</div>
       </div>
       <div
         ref={containerRef}
-        style={{ position: 'relative', width: '100%', height: '400px', perspective: '1000px', touchAction: 'none' }}
+        style={{ position: 'relative', width: '100%', height: '350px', perspective: '1000px', touchAction: 'none' }}
         onWheel={handleWheel}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
         {galleryItems.map((item, idx) => (
-          <div key={item.id} style={{ position: 'absolute', width: '240px', height: '340px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', transition: 'transform 0.6s, filter 0.6s, opacity 0.6s', left: 'calc(50% - 120px)', top: 'calc(50% - 170px)', ...getCardStyle(idx) }}>
-            <img src={item.src} alt={item.alt} className="w-full h-full object-cover" />
+          <div key={item.id} style={{ position: 'absolute', width: '220px', height: '300px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 16px 32px rgba(0,0,0,0.5)', transition: 'transform 0.6s, filter 0.6s, opacity 0.6s', left: 'calc(50% - 110px)', top: 'calc(50% - 150px)', ...getCardStyle(idx) }}>
+            <img src={item.src} alt={item.alt} className="w-full h-full object-cover" loading="lazy" />
           </div>
         ))}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
-        <button
-          onClick={goToPrev}
-          style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            color: 'white',
-            fontSize: '24px',
-            cursor: 'pointer',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'background 0.2s',
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-        >
-          ←
-        </button>
-        <button
-          onClick={goToNext}
-          style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            color: 'white',
-            fontSize: '24px',
-            cursor: 'pointer',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'background 0.2s',
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-        >
-          →
-        </button>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '16px' }}>
+        <button onClick={goToPrev} style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'white', fontSize: '18px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
+        <button onClick={goToNext} style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'white', fontSize: '18px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>→</button>
+      </div>
+      <div className="text-center mt-3">
+        <span className="font-montreal text-[10px] text-white/40">{activeIndex + 1} / {total}</span>
       </div>
     </div>
   );
