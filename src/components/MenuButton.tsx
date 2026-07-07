@@ -13,11 +13,11 @@ export default function MenuButton({ service, onClick, enterLabel = '[ ENTER ]' 
       onClick={onClick}
       className="group relative flex flex-col items-center pointer-events-auto"
       whileHover="hover"
-      style={{ flex: '0 0 auto' }}
+      style={{ flex: '1 1 auto', minWidth: '180px', maxWidth: '320px' }}
     >
       <motion.div
         variants={{ hover: { scale: 1.05, color: '#e5d3b3', transition: { duration: 0.3 } } }}
-        className="font-editorial text-xl sm:text-2xl md:text-3xl lg:text-4xl italic whitespace-nowrap text-white drop-shadow-2xl"
+        className="font-editorial text-2xl sm:text-3xl md:text-4xl lg:text-5xl italic text-center text-white drop-shadow-2xl"
       >
         {service.shortTitle}
       </motion.div>
