@@ -22,7 +22,8 @@ export function generateTimeSlots(date: string, duration: number, opening: strin
   const now = new Date();
   const isToday = date === now.toISOString().split('T')[0];
   const currentMin = isToday ? now.getHours() * 60 + now.getMinutes() + 30 : 0;
-  for (let t = start; t + duration <= end; t += 30) {
+  const interval = duration <= 15 ? 15 : 30;
+  for (let t = start; t + duration <= end; t += interval) {
     const time = `${Math.floor(t/60).toString().padStart(2,'0')}:${(t%60).toString().padStart(2,'0')}`;
     const endTime = addMinutes(time, duration);
     const isBlocked = blocked.some(b => b.blocked_date === date && timeToMinutes(b.start_time || '00:00') < t + duration && timeToMinutes(b.end_time || '23:59') > t);
