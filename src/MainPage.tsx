@@ -32,6 +32,7 @@ function MainApp() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showHeroVideo, setShowHeroVideo] = useState(false);
   const [heroFading, setHeroFading] = useState(false);
+  const [videoFading, setVideoFading] = useState(false);
   const closeLightbox = () => setLightboxImage(null);
 
   const showCard = useCallback(() => {
@@ -130,11 +131,10 @@ function MainApp() {
     <div className="w-screen h-screen bg-[#0a0a0a] text-[#f8f5f2] overflow-hidden relative selection:bg-[#e5d3b3] selection:text-black">
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
-        <div className="fixed inset-0 z-[200] bg-black">
-          <video autoPlay muted playsInline onEnded={() => { setStage(STAGES.MENU); setTimeout(() => setShowHeroVideo(false), 300); }} className="w-full h-full object-cover">
+        <div className="fixed inset-0 z-[200] bg-black" style={{ transition: 'opacity 0.6s ease-out', opacity: videoFading ? 0 : 1 }}>
+          <video autoPlay muted playsInline onEnded={() => { setVideoFading(true); setTimeout(() => { setShowHeroVideo(false); setVideoFading(false); }, 600); }} className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
-          
         </div>
       )}
       
