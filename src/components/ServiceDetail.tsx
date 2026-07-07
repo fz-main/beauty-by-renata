@@ -83,37 +83,6 @@ export default function ServiceDetail({ activeService, onBack, lang: _lang, t }:
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           </motion.div>
         </div>
-
-        {/* MASTER BLOCK */}
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
-          className="glass-panel rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-
-          <div className="flex-1">
-            <div className="font-monument text-[9px] tracking-[0.25em] text-[#e5d3b3] mb-4">{t.yourSpecialist}</div>
-            <div className="flex flex-col gap-5">
-              {Array.isArray(mastersT) && mastersT.map((m, i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <div className="shrink-0">
-                    {m.photo ? (
-                      <img src={m.photo} alt={m.name}
-                        className="w-16 h-16 rounded-2xl object-cover object-top"
-                        style={{ border: '1px solid rgba(229,211,179,0.2)' }} />
-                    ) : (
-                      <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-lg font-editorial font-bold"
-                        style={{ background: 'linear-gradient(135deg, #2a2a2a, #1a1a1a)', border: '1px solid rgba(229,211,179,0.2)', color: '#e5d3b3' }}>
-                        {m.name.split(' ').map((n: string) => n[0]).join('')}
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <div className="font-editorial text-lg md:text-xl">{m.name}</div>
-                    <div className="font-montreal text-xs text-[#a3a3a3]">{m.role} · {m.exp}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       <BookingModal

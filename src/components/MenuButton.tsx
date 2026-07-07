@@ -24,7 +24,14 @@ export default function MenuButton({ service, onClick, enterLabel = '[ ENTER ]' 
       <motion.div
         variants={{ hover: { opacity: 1, y: 0, transition: { delay: 0.1 } } }}
         initial={{ opacity: 0, y: 10 }}
-        className="absolute top-full left-1/2 -translate-x-1/2 mt-1 font-monument text-[7px] md:text-[8px] tracking-[0.2em] whitespace-nowrap text-[#e5d3b3]"
+        className="font-montreal text-[10px] md:text-xs text-white/50 text-center mt-1 max-w-[200px] leading-tight"
+      >
+        {service.subtitle}
+      </motion.div>
+      <motion.div
+        variants={{ hover: { opacity: 1, y: 0, transition: { delay: 0.15 } } }}
+        initial={{ opacity: 0, y: 10 }}
+        className="absolute top-full left-1/2 -translate-x-1/2 mt-3 font-monument text-[7px] md:text-[8px] tracking-[0.2em] whitespace-nowrap text-[#e5d3b3]"
       >
         {enterLabel}
       </motion.div>
