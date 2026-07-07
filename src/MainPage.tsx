@@ -137,8 +137,8 @@ function MainApp() {
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
             <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto">
               <div className="w-full h-full overflow-y-auto flex flex-col" style={{ touchAction: 'pan-y' }}>
-                <div className="flex-1 flex items-center justify-center px-4 md:px-12">
-                  <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 md:gap-x-10 md:gap-y-6 max-w-5xl">
+                <div className="flex-1 flex items-center justify-center px-6 md:px-16">
+                  <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 md:gap-x-14 md:gap-y-8 w-full max-w-7xl">
                     {SERVICES.map((srv) => (
                       <MenuButton key={srv.id} service={{ ...srv, title: t.services[srv.id as keyof typeof t.services]?.title || srv.title }} onClick={() => handleServiceClick(srv)} enterLabel={t.enterModule} />
                     ))}
