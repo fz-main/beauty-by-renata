@@ -32,6 +32,7 @@ function MainApp() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showHeroVideo, setShowHeroVideo] = useState(false);
   const [heroFading, setHeroFading] = useState(false);
+  const [videoBlurred, setVideoBlurred] = useState(false);
   
   const closeLightbox = () => setLightboxImage(null);
 
@@ -75,6 +76,7 @@ function MainApp() {
       } else if (stage === STAGES.MENU && e.deltaY < 0) {
         setShowHeroVideo(false);
         setHeroFading(false);
+        setVideoBlurred(false);
         setStage(STAGES.INTRO);
         lastScrollTime.current = now;
       } else if (stage === STAGES.MENU && e.deltaY > 0) {
@@ -138,10 +140,11 @@ function MainApp() {
     <div className="w-screen h-screen bg-[#0a0a0a] text-[#f8f5f2] overflow-hidden relative selection:bg-[#e5d3b3] selection:text-black">
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
-        <div className="fixed inset-0 z-[1]" style={{ transition: 'filter 1s ease-in-out', filter: showHeroVideo ? 'blur(0px)' : 'blur(20px)' }}>
-          <video autoPlay muted playsInline onEnded={() => { setTimeout(() => setShowHeroVideo(false), 2000); }} className="w-full h-full object-cover">
+        <div className="fixed inset-0 z-[1]" style={{ transition: 'filter 1.5s ease-in-out, opacity 1.5s ease-in-out', filter: videoBlurred ? 'blur(15px)' : 'none', opacity: videoBlurred ? 0.6 : 1 }}>
+          <video autoPlay muted playsInline onEnded={() => setVideoBlurred(true)} className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
+          <div className="absolute inset-0 bg-black/50" />
         </div>
       )}
       
