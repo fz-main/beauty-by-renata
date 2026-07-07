@@ -129,7 +129,7 @@ function MainApp() {
       {showHeroVideo && (
         <div className="fixed inset-0 z-[200]">
           <video autoPlay muted playsInline onEnded={() => { setShowHeroVideo(false); setStage(STAGES.MENU); }} className="w-full h-full object-cover">
-            <source src="/salon.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
           
         </div>
