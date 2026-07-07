@@ -66,7 +66,8 @@ function MainApp() {
       const now = Date.now();
       if (now - lastScrollTime.current < COOLDOWN) return;
       if (stage === STAGES.INTRO && e.deltaY > 0) {
-        setStage(STAGES.MENU);
+        setShowHeroVideo(true);
+        setTimeout(() => setStage(STAGES.MENU), 10000);
         lastScrollTime.current = now;
       } else if (stage === STAGES.MENU && e.deltaY < 0) {
         setStage(STAGES.INTRO);
@@ -91,7 +92,8 @@ function MainApp() {
       const deltaY = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(deltaY) > 50) {
         if (stage === STAGES.INTRO && deltaY > 0) {
-          setStage(STAGES.MENU);
+          setShowHeroVideo(true);
+          setTimeout(() => setStage(STAGES.MENU), 10000);
           lastScrollTime.current = now;
         } else if (stage === STAGES.MENU && deltaY < 0) {
           setStage(STAGES.INTRO);
