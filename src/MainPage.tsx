@@ -127,7 +127,7 @@ function MainApp() {
     <div className="w-screen h-screen bg-[#0a0a0a] text-[#f8f5f2] overflow-hidden relative selection:bg-[#e5d3b3] selection:text-black">
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
-        <div className="fixed inset-0 z-[200]">
+        <div className="fixed inset-0 z-[200] bg-black">
           <video autoPlay muted playsInline onEnded={() => { setShowHeroVideo(false); setStage(STAGES.MENU); }} className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
@@ -167,6 +167,8 @@ function MainApp() {
                     <a href={t.contacts?.facebook} target="_blank" rel="noopener noreferrer" className="font-monument text-[9px] tracking-widest text-white/50 hover:text-[#e5d3b3] transition-colors uppercase">Facebook</a>
                     <span className="text-white/20">·</span>
                     <a href={t.contacts?.instagram} target="_blank" rel="noopener noreferrer" className="font-monument text-[9px] tracking-widest text-white/50 hover:text-[#e5d3b3] transition-colors uppercase">Instagram</a>
+                    <span className="text-white/20">·</span>
+                    <a href="#/reklamacni-rad" className="font-monument text-[9px] tracking-widest text-white/50 hover:text-[#e5d3b3] transition-colors uppercase">Rekl. řád</a>
                     <span className="text-white/20">·</span>
                     <a href="#/reklamacni-rad" className="font-monument text-[9px] tracking-widest text-white/50 hover:text-[#e5d3b3] transition-colors uppercase">Rekl. řád</a>
                   </div>
