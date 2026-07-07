@@ -128,7 +128,7 @@ function MainApp() {
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
         <div className="fixed inset-0 z-[200] bg-black">
-          <video autoPlay muted playsInline onEnded={() => { setShowHeroVideo(false); setStage(STAGES.MENU); }} className="w-full h-full object-cover">
+          <video autoPlay muted playsInline onEnded={() => {}} loop className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
           
@@ -147,7 +147,7 @@ function MainApp() {
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
             <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto">
               <div className="w-full h-full overflow-y-auto flex flex-col" style={{ touchAction: 'pan-y' }}>
-                <div className="flex-1 px-4 md:px-10 pt-[225px] pb-8">
+                <div className="flex-1 px-4 md:px-10 pt-[200px] pb-8">
                   <div className="flex flex-wrap justify-center gap-x-6 gap-y-6 md:gap-x-8 md:gap-y-8 w-full max-w-6xl mx-auto">
                     {SERVICES.map((srv, i) => (
                       <MenuButton key={srv.id} service={srv} translatedTitle={t.services[srv.id as keyof typeof t.services]?.title} translatedSubtitle={t.services[srv.id as keyof typeof t.services]?.subtitle} onClick={() => handleServiceClick(srv)} enterLabel={t.enterModule} />
@@ -184,9 +184,10 @@ function MainApp() {
                   <div className="flex flex-wrap justify-center gap-4">
                     <a href={t.contacts?.instagram} target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-white text-black font-monument text-[10px] tracking-widest rounded-full hover:bg-[#e5d3b3] transition-colors">{t.giftWrite}</a>
                     <a href={`tel:${t.contacts?.phone?.replace(/\s/g, '')}`} className="px-6 py-3 border border-white/30 text-white font-monument text-[10px] tracking-widest rounded-full hover:bg-white/10 transition-colors">{t.giftCall}</a>
-                    <a href="#/reklamacni-rad" className="px-6 py-3 border border-white/30 text-white font-monument text-[10px] tracking-widest rounded-full hover:bg-white/10 transition-colors">Reklamační řád</a>
                   </div>
-                </div><motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="w-full mt-10 pointer-events-auto" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}><div className="px-6 md:px-12 py-5 flex flex-col items-center gap-1 text-center"><div className="font-monument text-[9px] tracking-[0.25em] text-[#e5d3b3] uppercase mb-1">Kontakty</div><div className="font-montreal text-xs text-white/80">{t.contacts?.address}</div><div className="font-montreal text-xs text-white/80 flex flex-wrap justify-center gap-x-2"><a href={`tel:${t.contacts?.phone?.replace(/\s/g, '')}`} className="hover:text-[#e5d3b3] transition-colors">{t.contacts?.phone}</a><span className="text-white/30">·</span><a href={`mailto:${t.contacts?.email}`} className="hover:text-[#e5d3b3] transition-colors">{t.contacts?.email}</a></div><div className="flex items-center gap-5 mt-1"><a href={t.contacts?.facebook} target="_blank" rel="noopener noreferrer" className="font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">Facebook</a><span className="text-white/20">·</span><a href="#" target="_blank" rel="noopener noreferrer" className="font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">Instagram</a></div></div></motion.div></div></motion.div>)}
+                </div><motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="w-full mt-10 pointer-events-auto" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}><div className="px-6 md:px-12 py-5 flex flex-col items-center gap-1 text-center"><div className="font-monument text-[9px] tracking-[0.25em] text-[#e5d3b3] uppercase mb-1">Kontakty</div><div className="font-montreal text-xs text-white/80">{t.contacts?.address}</div><div className="font-montreal text-xs text-white/80 flex flex-wrap justify-center gap-x-2"><a href={`tel:${t.contacts?.phone?.replace(/\s/g, '')}`} className="hover:text-[#e5d3b3] transition-colors">{t.contacts?.phone}</a><span className="text-white/30">·</span><a href={`mailto:${t.contacts?.email}`} className="hover:text-[#e5d3b3] transition-colors">{t.contacts?.email}</a></div><div className="flex items-center gap-5 mt-1"><a href={t.contacts?.facebook} target="_blank" rel="noopener noreferrer" className="font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">Facebook</a><span className="text-white/20">·</span><a href="#" target="_blank" rel="noopener noreferrer" className="font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">Instagram</a>
+                    <span className="text-white/20">·</span>
+                    <a href="#/reklamacni-rad" className="font-monument text-[9px] tracking-widest text-white/50 hover:text-[#e5d3b3] transition-colors uppercase">Rekl. řád</a></div></div></motion.div></div></motion.div>)}
           {stage === STAGES.SERVICE_DETAIL && activeService && !isTransitioning && (<ServiceDetail key="detail" activeService={activeService} onBack={handleBack} lang={lang} t={t} />)}
         </AnimatePresence>
       </div>
