@@ -77,15 +77,14 @@ function MainApp() {
         setShowHeroVideo(false);
         setHeroFading(false);
         setStage(STAGES.INTRO);
+        lastScrollTime.current = now;
+      } else if (stage === STAGES.MENU && e.deltaY > 0) {
+        setStage(STAGES.ABOUT);
+        lastScrollTime.current = now;
+      } else if (stage === STAGES.ABOUT && e.deltaY < 0) {
+        if (aboutContainer && aboutContainer.scrollTop === 0) {
+          setStage(STAGES.MENU);
           lastScrollTime.current = now;
-        } else if (stage === STAGES.MENU && deltaY > 0) {
-          setStage(STAGES.ABOUT);
-          lastScrollTime.current = now;
-        } else if (stage === STAGES.ABOUT && deltaY < 0) {
-          if (aboutContainer && aboutContainer.scrollTop === 0) {
-            setStage(STAGES.MENU);
-            lastScrollTime.current = now;
-          }
         }
       }
     };
