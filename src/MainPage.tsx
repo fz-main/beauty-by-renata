@@ -163,7 +163,7 @@ function MainApp() {
               <div className="font-editorial text-[10vw] sm:text-[8vw] md:text-[5vw] leading-none tracking-wider text-[#a3a3a3]">BY</div>
               <div className="font-editorial text-[18vw] sm:text-[14vw] md:text-[10vw] leading-none tracking-tighter">RENATA</div>
             </div>
-            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="font-montreal text-[11px] md:text-sm text-[#a3a3a3] tracking-widest uppercase mt-4 text-center">{t.tagline}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="font-montreal text-[11px] md:text-sm text-[#a3a3a3] tracking-widest uppercase mt-8 mb-16 text-center">{t.tagline}</motion.p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="absolute bottom-8 md:bottom-12 flex flex-col items-center">
               <span className="font-montreal text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#a3a3a3] mb-3 md:mb-4">{t.scrollToEnter}</span>
               <div className="w-[1px] h-10 md:h-12 bg-white/20 overflow-hidden relative"><motion.div animate={{ y: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="absolute inset-0 bg-white" /></div>
