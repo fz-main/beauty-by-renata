@@ -129,7 +129,7 @@ function MainApp() {
       {showHeroVideo && (
         <div className="fixed inset-0 z-[200] pointer-events-none">
           <video autoPlay muted playsInline onEnded={() => setShowHeroVideo(false)} className="w-full h-full object-cover">
-            <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xoook.mp4" type="video/mp4" />
+            <source src="/salon.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black/20" />
         </div>
@@ -154,7 +154,7 @@ function MainApp() {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-1 text-center px-6 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex flex-col items-center gap-0.5 text-center px-4 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                   <div className="font-monument text-[8px] tracking-[0.25em] text-[#e5d3b3] uppercase mb-1">{t.contacts?.title || 'Kontakty'}</div>
                   <div className="font-montreal text-[10px] text-white/70">{t.contacts?.address}</div>
                   <div className="font-montreal text-[10px] text-white/70 flex flex-wrap justify-center gap-x-2">
