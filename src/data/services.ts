@@ -1,4 +1,4 @@
-export const STAGES = { INTRO: 0, MENU: 1, SERVICE_DETAIL: 2, ABOUT: 3 };
+export const STAGES = { INTRO: 0, MENU: 1, SERVICE_DETAIL: 2, ABOUT: 3, CATALOG: 4 };
 
 export interface Service {
   id: string;
