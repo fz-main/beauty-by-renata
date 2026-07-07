@@ -116,7 +116,7 @@ export const AdminDashboard: React.FC<{ onLogout: () => void }> = ({ onLogout })
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-6">
+    <div className="min-h-screen bg-[#0a0a0a] text-white p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Administrace - Beauty by Renata</h1>
