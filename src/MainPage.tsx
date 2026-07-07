@@ -154,7 +154,7 @@ function MainApp() {
         <header className={`absolute top-0 left-0 w-full px-6 py-5 md:px-8 md:py-8 flex justify-between items-center z-50 mix-blend-difference transition-opacity duration-500 ${showHeroVideo ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}><div className="font-monument text-[10px] md:text-xs tracking-[0.2em]">BEAUTY BY RENATA</div><div className="flex items-center gap-3 md:gap-4 pointer-events-auto">{stage === STAGES.MENU && (<button onClick={() => setStage(STAGES.ABOUT)} className="lg:hidden font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">{t.aboutLabel}</button>)}<div className="flex items-center gap-1">{langs.map((l) => (<button key={l} onClick={() => setLang(l)} className={`font-monument text-[9px] md:text-[10px] tracking-wider px-2 py-1 rounded-full transition-all ${lang === l ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}>{l.toUpperCase()}</button>))}</div><div className="font-montreal text-[10px] md:text-xs uppercase tracking-widest">Brno</div></div></header>
         
             <AnimatePresence>
-          {stage === STAGES.INTRO && ({stage === STAGES.INTRO && !showHeroVideo && (
+          {stage === STAGES.INTRO && !showHeroVideo && (
               <div className="absolute inset-0 z-0">
                 <video autoPlay muted loop playsInline className="w-full h-full object-cover" poster="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4">
                   <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
