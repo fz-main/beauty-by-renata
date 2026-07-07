@@ -13,7 +13,6 @@ interface ServiceDetailProps {
 
 export default function ServiceDetail({ activeService, onBack, lang: _lang, t }: ServiceDetailProps) {
   const srvT = t.services[activeService.id as keyof typeof t.services];
-  const mastersT = (t.masters[activeService.id as keyof typeof t.masters] as unknown) as Array<{ name: string; role: string; exp: string; photo?: string }>;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -34,55 +33,98 @@ export default function ServiceDetail({ activeService, onBack, lang: _lang, t }:
         {t.back}
       </button>
 
-      <div className="min-h-full px-4 md:px-16 pt-24 pb-16 flex flex-col gap-8 max-w-7xl mx-auto">
+      <div className="min-h-full px-4 md:px-16 pt-24 pb-16 flex flex-col gap-8 max-w-5xl mx-auto">
 
-        {/* SERVICE CARD */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
+        {/* HEADER */}
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}>
+          <div className="font-monument text-[10px] md:text-xs tracking-[0.25em] text-[#e5d3b3] mb-3">
+            {srvT?.subtitle}
+          </div>
+          <h1 className="text-4xl md:text-6xl font-editorial mb-4 leading-[0.9]">
+            {srvT?.title || activeService.title}
+          </h1>
+          <div className="flex flex-wrap items-center gap-4 md:gap-6 border-t border-white/10 pt-5">
+            <div>
+              <div className="font-monument text-[8px] text-[#a3a3a3] mb-1 tracking-widest">{t.duration}</div>
+              <div className="font-editorial text-lg md:text-2xl">{activeService.time}</div>
+            </div>
+            <div>
+              <div className="font-monument text-[8px] text-[#a3a3a3] mb-1 tracking-widest">{t.investment}</div>
+              <div className="font-editorial text-lg md:text-2xl text-[#e5d3b3]">{activeService.price}</div>
+            </div>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full md:w-auto mt-2 md:mt-0 md:ml-auto px-8 py-3 bg-white text-black font-monument text-[10px] tracking-widest rounded-full hover:bg-[#e5d3b3] transition-colors"
+            >
+              {t.reserve}
+            </button>
+          </div>
+        </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-            className="glass-panel p-6 md:p-10 rounded-3xl">
-            <h4 className="font-monument text-[10px] md:text-xs tracking-[0.25em] text-[#e5d3b3] mb-3 md:mb-4">
-              {srvT?.subtitle}
-            </h4>
-            <h2 className="text-4xl md:text-7xl font-editorial mb-4 md:mb-6 leading-[0.9]">
-              {srvT?.title}
-            </h2>
-            <p className="font-montreal text-sm md:text-base text-[#a3a3a3] leading-relaxed mb-6 md:mb-10">
-              {srvT?.desc}
-            </p>
-            <div className="flex flex-wrap items-center gap-4 md:gap-6 border-t border-white/10 pt-5">
-              <div>
-                <div className="font-monument text-[8px] text-[#a3a3a3] mb-1 tracking-widest">{t.duration}</div>
-                <div className="font-editorial text-lg md:text-2xl">{activeService.time}</div>
-              </div>
-              <div>
-                <div className="font-monument text-[8px] text-[#a3a3a3] mb-1 tracking-widest">{t.investment}</div>
-                <div className="font-editorial text-lg md:text-2xl text-[#e5d3b3]">{activeService.price}</div>
-              </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full md:w-auto mt-2 md:mt-0 md:ml-auto px-6 py-3 bg-white text-black font-monument text-[10px] tracking-widest rounded-full hover:bg-[#e5d3b3] transition-colors"
-              >
-                {t.reserve}
-              </button>
+        {/* VIDEO */}
+        {activeService.video && (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
+            className="rounded-3xl overflow-hidden relative shadow-2xl" style={{ aspectRatio: '16/9', maxHeight: '400px' }}>
+            <video autoPlay muted loop playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover">
+              <source src={activeService.video} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          </motion.div>
+        )}
+
+        {/* DESCRIPTION */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
+          className="glass-panel rounded-3xl p-6 md:p-10">
+          <p className="font-montreal text-base md:text-lg text-white/80 leading-relaxed">
+            {srvT?.desc || activeService.desc}
+          </p>
+        </motion.div>
+
+        {/* BENEFITS */}
+        {activeService.benefits && activeService.benefits.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
+            className="glass-panel rounded-3xl p-6 md:p-10">
+            <div className="font-monument text-[10px] tracking-[0.25em] text-[#e5d3b3] mb-5">Co vám přinese</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {activeService.benefits.map((b, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-[#e5d3b3] mt-1 shrink-0">✦</span>
+                  <span className="font-montreal text-sm text-white/70">{b}</span>
+                </div>
+              ))}
             </div>
           </motion.div>
+        )}
 
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.3 }}
-            className="rounded-3xl overflow-hidden relative shadow-2xl"
-            style={{ aspectRatio: '9/16', maxHeight: '70vh' }}>
-            {activeService.video ? (
-              <video autoPlay muted loop playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover">
-                <source src={activeService.video} type="video/mp4" />
-              </video>
-            ) : (
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] flex items-center justify-center">
-                <span className="text-[#e5d3b3] font-monument text-sm tracking-widest">Video se brzy objeví</span>
-              </div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        {/* PROCESS */}
+        {activeService.process && activeService.process.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
+            className="glass-panel rounded-3xl p-6 md:p-10">
+            <div className="font-monument text-[10px] tracking-[0.25em] text-[#e5d3b3] mb-5">Průběh ošetření</div>
+            <div className="flex flex-col gap-4">
+              {activeService.process.map((step, i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-editorial text-sm" style={{ background: 'rgba(229,211,179,0.15)', color: '#e5d3b3' }}>
+                    {i + 1}
+                  </div>
+                  <span className="font-montreal text-sm text-white/70 pt-1">{step}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
-        </div>
+        )}
+
+        {/* CTA */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center py-6">
+          <p className="font-montreal text-sm text-white/50 mb-4">Máte zájem o toto ošetření?</p>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-10 py-4 bg-white text-black font-monument text-[11px] tracking-widest rounded-full hover:bg-[#e5d3b3] transition-colors"
+          >
+            {t.reserve}
+          </button>
+        </motion.div>
       </div>
 
       <BookingModal
