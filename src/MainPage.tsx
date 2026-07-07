@@ -32,7 +32,7 @@ function MainApp() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showHeroVideo, setShowHeroVideo] = useState(false);
   const [heroFading, setHeroFading] = useState(false);
-  const [videoFading, setVideoFading] = useState(false);
+  
   const closeLightbox = () => setLightboxImage(null);
 
   const showCard = useCallback(() => {
@@ -70,10 +70,9 @@ function MainApp() {
       if (stage === STAGES.INTRO && e.deltaY > 0) {
         setHeroFading(true);
         setShowHeroVideo(true);
-        setTimeout(() => { setStage(STAGES.MENU); setHeroFading(false); }, 600);
+        setTimeout(() => setStage(STAGES.MENU), 800);
         lastScrollTime.current = now;
       } else if (stage === STAGES.MENU && e.deltaY < 0) {
-        setVideoFading(false);
         setShowHeroVideo(false);
         setHeroFading(false);
         setStage(STAGES.INTRO);
@@ -100,7 +99,7 @@ function MainApp() {
         if (stage === STAGES.INTRO && deltaY > 0) {
           setHeroFading(true);
           setShowHeroVideo(true);
-          setTimeout(() => { setStage(STAGES.MENU); setHeroFading(false); }, 600);
+          setTimeout(() => setStage(STAGES.MENU), 800);
           lastScrollTime.current = now;
         } else if (stage === STAGES.MENU && deltaY < 0) {
           setVideoFading(false);
@@ -139,8 +138,8 @@ function MainApp() {
     <div className="w-screen h-screen bg-[#0a0a0a] text-[#f8f5f2] overflow-hidden relative selection:bg-[#e5d3b3] selection:text-black">
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
-        <div className="fixed inset-0 z-[1]" style={{ transition: 'filter 0.8s ease-out', filter: videoFading ? 'blur(20px)' : 'none' }}>
-          <video autoPlay muted playsInline onEnded={() => { setTimeout(() => setVideoFading(true), 500); }} className="w-full h-full object-cover">
+        <div className="fixed inset-0 z-[1]" style={{ transition: 'filter 1s ease-in-out', filter: showHeroVideo ? 'blur(0px)' : 'blur(20px)' }}>
+          <video autoPlay muted playsInline onEnded={() => { setTimeout(() => setShowHeroVideo(false), 2000); }} className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
         </div>
@@ -165,7 +164,7 @@ function MainApp() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="absolute bottom-8 md:bottom-12 flex flex-col items-center">
               <span className="font-montreal text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#a3a3a3] mb-3 md:mb-4">{t.scrollToEnter}</span>
               <div className="w-[1px] h-10 md:h-12 bg-white/20 overflow-hidden relative"><motion.div animate={{ y: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="absolute inset-0 bg-white" /></div>
-              <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => { setHeroFading(true); setShowHeroVideo(true); setTimeout(() => { setStage(STAGES.MENU); setHeroFading(false); }, 600); }} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button>
+              <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => { setHeroFading(true); setShowHeroVideo(true); setTimeout(() => setStage(STAGES.MENU), 800); }} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button>
             </motion.div>
           </motion.div>)}
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
