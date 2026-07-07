@@ -61,17 +61,6 @@ export default function ServiceDetail({ activeService, onBack, lang: _lang, t }:
           </div>
         </motion.div>
 
-        {/* VIDEO */}
-        {activeService.video && (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
-            className="rounded-3xl overflow-hidden relative shadow-2xl" style={{ aspectRatio: '16/9', maxHeight: '400px' }}>
-            <video autoPlay muted loop playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover">
-              <source src={activeService.video} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-          </motion.div>
-        )}
-
         {/* DESCRIPTION */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
           className="glass-panel rounded-3xl p-6 md:p-10">
