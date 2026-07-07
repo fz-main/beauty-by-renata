@@ -88,6 +88,37 @@ function MainApp() {
         }
       }
     };
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchEnd = (e: TouchEvent) => {
+      const now = Date.now();
+      if (now - lastScrollTime.current < COOLDOWN) return;
+      const deltaY = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(deltaY) > 50) {
+        if (stage === STAGES.INTRO && deltaY > 0) {
+          setHeroFading(true);
+          setShowHeroVideo(true);
+          setTimeout(() => { setStage(STAGES.MENU); setHeroFading(false); }, 600);
+          lastScrollTime.current = now;
+        } else if (stage === STAGES.MENU && deltaY < 0) {
+          setVideoFading(false);
+          setShowHeroVideo(false);
+          setHeroFading(false);
+          setStage(STAGES.INTRO);
+          lastScrollTime.current = now;
+        } else if (stage === STAGES.MENU && deltaY > 0) {
+          setStage(STAGES.ABOUT);
+          lastScrollTime.current = now;
+        } else if (stage === STAGES.ABOUT && deltaY < 0) {
+          if (aboutContainer && aboutContainer.scrollTop === 0) {
+            setStage(STAGES.MENU);
+            lastScrollTime.current = now;
+          }
+        }
+      }
+    };
     window.addEventListener('wheel', handleWheel);
     window.addEventListener('touchstart', handleTouchStart);
     window.addEventListener('touchend', handleTouchEnd);
