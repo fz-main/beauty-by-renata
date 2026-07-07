@@ -67,7 +67,6 @@ function MainApp() {
       if (now - lastScrollTime.current < COOLDOWN) return;
       if (stage === STAGES.INTRO && e.deltaY > 0) {
         setShowHeroVideo(true);
-        setTimeout(() => setStage(STAGES.MENU), 10000);
         lastScrollTime.current = now;
       } else if (stage === STAGES.MENU && e.deltaY < 0) {
         setStage(STAGES.INTRO);
@@ -93,7 +92,6 @@ function MainApp() {
       if (Math.abs(deltaY) > 50) {
         if (stage === STAGES.INTRO && deltaY > 0) {
           setShowHeroVideo(true);
-          setTimeout(() => setStage(STAGES.MENU), 10000);
           lastScrollTime.current = now;
         } else if (stage === STAGES.MENU && deltaY < 0) {
           setStage(STAGES.INTRO);
@@ -130,8 +128,8 @@ function MainApp() {
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
         <div className="fixed inset-0 z-[200] bg-black">
-          <video autoPlay muted playsInline onEnded={() => {}} loop className="w-full h-full object-cover">
-            <source src="https://res.cloudinary.com/dfh97tdty/video/upload/q_60,w_1280,f_auto/v1783430929/0707_xkoook.mp4" type="video/mp4" />
+          <video autoPlay muted playsInline onEnded={() => { setShowHeroVideo(false); setStage(STAGES.MENU); }} className="w-full h-full object-cover">
+            <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
           
         </div>
