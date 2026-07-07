@@ -135,16 +135,14 @@ function MainApp() {
         <AnimatePresence mode="wait">
           {stage === STAGES.INTRO && (<motion.div key="intro" exit={{ opacity: 0, filter: 'blur(20px)', scale: 1.1 }} transition={{ duration: 1.5, ease: 'easeInOut' }} className="absolute inset-0 flex flex-col items-center justify-center px-4"><div className="overflow-hidden flex flex-wrap justify-center">{'BEAUTY BY RENATA'.split('').map((char, i) => (<motion.span key={i} custom={i} variants={letterVariants} initial="hidden" animate="visible" className="text-[12vw] sm:text-[10vw] md:text-[8vw] font-editorial leading-none tracking-tighter">{char}</motion.span>))}</div><motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="font-montreal text-[11px] md:text-sm text-[#a3a3a3] tracking-widest uppercase mt-4 text-center">{t.tagline}</motion.p><motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="absolute bottom-8 md:bottom-12 flex flex-col items-center"><span className="font-montreal text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#a3a3a3] mb-3 md:mb-4">{t.scrollToEnter}</span><div className="w-[1px] h-10 md:h-12 bg-white/20 overflow-hidden relative"><motion.div animate={{ y: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="absolute inset-0 bg-white" /></div><motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => setStage(STAGES.MENU)} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button></motion.div></motion.div>)}
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
-            <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto">
-              <div className="w-full h-full overflow-y-auto flex flex-col" style={{ touchAction: 'pan-y' }}>
-                <div className="flex-1 flex flex-col justify-between px-6 md:px-16 py-20">
-                  <div className="flex flex-wrap justify-between items-start content-start gap-x-8 gap-y-4 md:gap-x-12 md:gap-y-5 w-full max-w-7xl mx-auto">
-                    {SERVICES.map((srv) => (
-                      <MenuButton key={srv.id} service={{ ...srv, title: t.services[srv.id as keyof typeof t.services]?.title || srv.title }} onClick={() => handleServiceClick(srv)} enterLabel={t.enterModule} />
-                    ))}
-                  </div>
+            <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto overflow-hidden">
+              <div className="w-full h-full flex flex-col justify-evenly px-6 md:px-16 pt-16 pb-4">
+                <div className="flex flex-wrap justify-evenly items-center gap-x-4 gap-y-2 md:gap-x-8 md:gap-y-3 w-full">
+                  {SERVICES.map((srv) => (
+                    <MenuButton key={srv.id} service={{ ...srv, title: t.services[srv.id as keyof typeof t.services]?.title || srv.title }} onClick={() => handleServiceClick(srv)} enterLabel={t.enterModule} />
+                  ))}
                 </div>
-                <div className="flex flex-col items-center gap-1 text-center px-6 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex flex-col items-center gap-1 text-center px-6 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                   <div className="font-monument text-[8px] tracking-[0.25em] text-[#e5d3b3] uppercase mb-1">{t.contacts?.title || 'Kontakty'}</div>
                   <div className="font-montreal text-[10px] text-white/70">{t.contacts?.address}</div>
                   <div className="font-montreal text-[10px] text-white/70 flex flex-wrap justify-center gap-x-2">
