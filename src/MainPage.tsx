@@ -69,36 +69,14 @@ function MainApp() {
       if (now - lastScrollTime.current < COOLDOWN) return;
       if (stage === STAGES.INTRO && e.deltaY > 0) {
         setHeroFading(true);
-        setTimeout(() => { setStage(STAGES.MENU); setShowHeroVideo(true); setHeroFading(false); }, 600);
+        setShowHeroVideo(true);
+        setTimeout(() => { setStage(STAGES.MENU); setHeroFading(false); }, 600);
         lastScrollTime.current = now;
       } else if (stage === STAGES.MENU && e.deltaY < 0) {
+        setVideoFading(false);
+        setShowHeroVideo(false);
+        setHeroFading(false);
         setStage(STAGES.INTRO);
-        lastScrollTime.current = now;
-      } else if (stage === STAGES.MENU && e.deltaY > 0) {
-        setStage(STAGES.ABOUT);
-        lastScrollTime.current = now;
-      } else if (stage === STAGES.ABOUT && e.deltaY < 0) {
-        if (aboutContainer && aboutContainer.scrollTop === 0) {
-          setStage(STAGES.MENU);
-          lastScrollTime.current = now;
-        }
-      }
-    };
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-    const handleTouchEnd = (e: TouchEvent) => {
-      const now = Date.now();
-      if (now - lastScrollTime.current < COOLDOWN) return;
-      const deltaY = touchStartY - e.changedTouches[0].clientY;
-      if (Math.abs(deltaY) > 50) {
-        if (stage === STAGES.INTRO && deltaY > 0) {
-          setHeroFading(true);
-          setTimeout(() => { setStage(STAGES.MENU); setShowHeroVideo(true); setHeroFading(false); }, 600);
-          lastScrollTime.current = now;
-        } else if (stage === STAGES.MENU && deltaY < 0) {
-          setStage(STAGES.INTRO);
           lastScrollTime.current = now;
         } else if (stage === STAGES.MENU && deltaY > 0) {
           setStage(STAGES.ABOUT);
@@ -131,11 +109,10 @@ function MainApp() {
     <div className="w-screen h-screen bg-[#0a0a0a] text-[#f8f5f2] overflow-hidden relative selection:bg-[#e5d3b3] selection:text-black">
       {lightboxImage && <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center cursor-pointer" onClick={closeLightbox}><img src={lightboxImage} alt="Lightbox" className="max-w-[90vw] max-h-[90vh] object-contain" /><button className="absolute top-4 right-4 text-white text-4xl">&times;</button></div>}
       {showHeroVideo && (
-        <div className="fixed inset-0 z-[200]" style={{ transition: 'filter 0.8s ease-out', filter: videoFading ? 'blur(20px)' : 'none' }}>
-          <video autoPlay muted playsInline onEnded={() => { setVideoFading(true); setTimeout(() => { setShowHeroVideo(false); setVideoFading(false); }, 800); }} className="w-full h-full object-cover">
+        <div className="fixed inset-0 z-[1]" style={{ transition: 'filter 0.8s ease-out', filter: videoFading ? 'blur(20px)' : 'none' }}>
+          <video autoPlay muted playsInline onEnded={() => { setVideoFading(true); }} className="w-full h-full object-cover">
             <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-black/40" />
         </div>
       )}
       
@@ -158,7 +135,7 @@ function MainApp() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="absolute bottom-8 md:bottom-12 flex flex-col items-center">
               <span className="font-montreal text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#a3a3a3] mb-3 md:mb-4">{t.scrollToEnter}</span>
               <div className="w-[1px] h-10 md:h-12 bg-white/20 overflow-hidden relative"><motion.div animate={{ y: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="absolute inset-0 bg-white" /></div>
-              <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => { setHeroFading(true); setTimeout(() => { setStage(STAGES.MENU); setShowHeroVideo(true); setHeroFading(false); }, 600); }} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button>
+              <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }} onClick={() => { setHeroFading(true); setShowHeroVideo(true); setTimeout(() => { setStage(STAGES.MENU); setHeroFading(false); }, 600); }} className="mt-6 px-6 py-3 border border-white/30 rounded-full font-montreal text-[10px] md:text-xs uppercase tracking-widest text-white/80 hover:bg-white/10 hover:border-white/50 transition-all pointer-events-auto">{t.scrollToServices || 'Služby ↓'}</motion.button>
             </motion.div>
           </motion.div>)}
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
