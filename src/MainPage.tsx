@@ -137,6 +137,14 @@ function MainApp() {
           
         </div>
       )}
+      {stage === STAGES.INTRO && !showHeroVideo && (
+        <div className="absolute inset-0 z-0">
+          <video autoPlay muted loop playsInline className="w-full h-full object-cover">
+            <source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1783430929/0707_xkoook.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      )}
       {/* ThreeScene disabled for debugging */}
       {/* <div className="absolute inset-0 z-0 pointer-events-none"><ThreeScene stage={stage} activeService={activeService} isTransitioning={isTransitioning} onServiceClick={handleServiceClick} /></div> */}
       {(stage === STAGES.MENU || stage === STAGES.SERVICE_DETAIL) && (<div className="absolute inset-0 z-[1] pointer-events-none" style={{ opacity: stage === STAGES.MENU && !showTransition ? 1 : 0, transition: 'opacity 2s ease' }}><video autoPlay muted loop playsInline className="w-full h-full object-cover object-top"><source src="https://res.cloudinary.com/dfh97tdty/video/upload/v1781625683/-138173675065827356_cj8yud.mov" type="video/mp4" /></video><div className="absolute inset-0 bg-black/75" /></div>)}
