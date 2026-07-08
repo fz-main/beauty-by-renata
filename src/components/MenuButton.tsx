@@ -15,11 +15,11 @@ export default function MenuButton({ service, translatedTitle, translatedSubtitl
       onClick={onClick}
       className="group relative flex flex-col items-center pointer-events-auto"
       whileHover="hover"
-      style={{ flex: '1 1 auto', minWidth: '100px', maxWidth: '200px' }}
+      style={{ flex: '1 1 auto', minWidth: '90px', maxWidth: '180px' }}
     >
       <motion.div
         variants={{ hover: { scale: 1.05, color: '#e5d3b3', transition: { duration: 0.3 } } }}
-        className="font-editorial text-sm sm:text-base md:text-lg lg:text-xl italic text-center text-white drop-shadow-2xl leading-tight"
+        className="font-editorial text-xs sm:text-sm md:text-base lg:text-lg italic text-center text-white drop-shadow-2xl leading-tight"
       >
         {translatedTitle || service.shortTitle}
       </motion.div>
