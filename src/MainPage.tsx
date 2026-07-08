@@ -154,7 +154,7 @@ function MainApp() {
       {bgVideoUrl && stage === STAGES.SERVICE_DETAIL && (<div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden" style={{ transform: 'scale(1.15)' }}><video ref={bgVideoRef} src={bgVideoUrl} muted playsInline className="w-full h-full object-cover" style={{ filter: 'blur(20px)' }} /><div className="absolute inset-0 bg-black/70" /></div>)}
       <AnimatePresence>{showTransition && transitionUrl && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="absolute inset-0 z-[20] pointer-events-none"><TransitionVideo url={transitionUrl} onEnded={showCard} bgVideoRef={bgVideoRef} /></motion.div>)}</AnimatePresence>
       <div className="absolute inset-0 z-10 pointer-events-none">
-        <header className="absolute top-0 left-0 w-full px-6 py-5 md:px-8 md:py-8 flex justify-between items-center z-50 mix-blend-difference"><div className="font-monument text-[10px] md:text-xs tracking-[0.2em]">BEAUTY BY RENATA</div><div className="flex items-center gap-3 md:gap-4 pointer-events-auto">{stage === STAGES.MENU && (<button onClick={() => setStage(STAGES.ABOUT)} className="lg:hidden font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">{t.aboutLabel}</button>)}<div className="flex items-center gap-1">{langs.map((l) => (<button key={l} onClick={() => setLang(l)} className={`font-monument text-[9px] md:text-[10px] tracking-wider px-2 py-1 rounded-full transition-all ${lang === l ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}>{l.toUpperCase()}</button>))}</div><div className="font-montreal text-[10px] md:text-xs uppercase tracking-widest">Brno</div></div></header>
+        <header className="absolute top-0 left-0 w-full px-6 py-5 md:px-8 md:py-8 flex justify-between items-center z-50 mix-blend-difference"><div className="font-monument text-[10px] md:text-xs tracking-[0.2em]">BEAUTY BY RENATA</div><div className="flex items-center gap-3 md:gap-4 pointer-events-auto">{stage === STAGES.MENU && (<button onClick={() => setStage(STAGES.ABOUT)} className="hidden lg:block font-monument text-[9px] tracking-widest text-white/60 hover:text-[#e5d3b3] transition-colors uppercase">{t.aboutLabel}</button>)}<div className="flex items-center gap-1">{langs.map((l) => (<button key={l} onClick={() => setLang(l)} className={`font-monument text-[9px] md:text-[10px] tracking-wider px-2 py-1 rounded-full transition-all ${lang === l ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}>{l.toUpperCase()}</button>))}</div><div className="font-montreal text-[10px] md:text-xs uppercase tracking-widest">Brno</div></div></header>
         
             <AnimatePresence mode="wait">
           {stage === STAGES.INTRO && (<motion.div key="intro" exit={{ opacity: 0, filter: 'blur(20px)', scale: 1.1 }} transition={{ duration: 1.5, ease: 'easeInOut' }} className="absolute inset-0 flex flex-col items-center justify-center px-4" style={{ opacity: heroFading ? 0 : 1, transition: 'opacity 0.5s ease-out' }}>
@@ -173,10 +173,10 @@ function MainApp() {
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
             <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto z-[210]">
               <div className="w-full h-full overflow-y-auto flex flex-col" style={{ touchAction: 'pan-y' }}>
-                <div className="flex-1 px-3 md:px-10 pt-4 md:pt-[200px] pb-4 overflow-y-auto">
+                <div className="flex-1 px-3 md:px-10 pt-4 md:pt-[150px] pb-4 overflow-y-auto">
                   <div className="text-center mb-6 md:mb-8">
-                    <div className="font-monument text-[9px] md:text-[10px] tracking-[0.3em] text-[#e5d3b3] uppercase mb-2">Kategorie</div>
-                    <h2 className="font-editorial text-2xl md:text-3xl">{t.servicesTitle || 'Moje služby'}</h2>
+                    <div className="font-monument text-[9px] md:text-[11px] tracking-[0.3em] text-[#e5d3b3] uppercase mb-2">Kategorie</div>
+                    <h2 className="font-editorial text-2xl md:text-4xl">{t.servicesTitle || 'Moje služby'}</h2>
                   </div>
                   <div className="flex flex-wrap justify-center gap-x-3 gap-y-3 md:gap-x-8 md:gap-y-8 w-full max-w-6xl mx-auto">
                     {SERVICES.map((srv, i) => (
