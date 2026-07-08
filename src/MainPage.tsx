@@ -131,8 +131,8 @@ function MainApp() {
   }, [stage]);
 
   const letterVariants: any = {
-    hidden: { opacity: 0, y: 50, filter: 'blur(10px)' },
-    visible: (i: number) => ({ opacity: 1, y: 0, filter: 'blur(0px)', transition: { delay: i * 0.05, duration: 0.8 } })
+    hidden: { opacity: 0, y: 80, filter: 'blur(20px)', scale: 0.8 },
+    visible: (i: number) => ({ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, transition: { delay: 0.3 + i * 0.06, duration: 1, ease: [0.25, 0.46, 0.45, 0.94] } })
   };
   const langs: Lang[] = ['cs', 'en', 'de'];
 
@@ -159,9 +159,9 @@ function MainApp() {
             <AnimatePresence mode="wait">
           {stage === STAGES.INTRO && (<motion.div key="intro" exit={{ opacity: 0, filter: 'blur(20px)', scale: 1.1 }} transition={{ duration: 1.5, ease: 'easeInOut' }} className="absolute inset-0 flex flex-col items-center justify-center px-4" style={{ opacity: heroFading ? 0 : 1, transition: 'opacity 0.5s ease-out' }}>
             <div className="text-center">
-              <div className="font-editorial text-[18vw] sm:text-[14vw] md:text-[10vw] leading-none tracking-tighter">BEAUTY</div>
-              <div className="font-editorial text-[10vw] sm:text-[8vw] md:text-[5vw] leading-none tracking-wider text-[#a3a3a3]">BY</div>
-              <div className="font-editorial text-[18vw] sm:text-[14vw] md:text-[10vw] leading-none tracking-tighter">RENATA</div>
+              <div className="overflow-hidden">{'BEAUTY'.split('').map((char, i) => (<motion.span key={`b${i}`} custom={i} variants={letterVariants} initial="hidden" animate="visible" className="font-editorial text-[18vw] sm:text-[14vw] md:text-[10vw] leading-none tracking-tighter inline-block">{char}</motion.span>))}</div>
+              <div className="overflow-hidden"><motion.span custom={5} variants={letterVariants} initial="hidden" animate="visible" className="font-editorial text-[10vw] sm:text-[8vw] md:text-[5vw] leading-none tracking-wider text-[#a3a3a3] inline-block">BY</motion.span></div>
+              <div className="overflow-hidden">{'RENATA'.split('').map((char, i) => (<motion.span key={`r${i}`} custom={i + 7} variants={letterVariants} initial="hidden" animate="visible" className="font-editorial text-[18vw] sm:text-[14vw] md:text-[10vw] leading-none tracking-tighter inline-block">{char}</motion.span>))}</div>
             </div>
             <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }} className="font-montreal text-[11px] md:text-sm text-[#a3a3a3] tracking-widest uppercase mt-8 mb-16 text-center">{t.tagline}</motion.p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 2 }} className="flex flex-col items-center mt-12">
@@ -171,7 +171,7 @@ function MainApp() {
             </motion.div>
           </motion.div>)}
           {stage === STAGES.MENU && !isTransitioning && !showTransition && (
-            <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto z-[210]">
+            <motion.div key="menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-auto z-[5]">
               <div className="w-full h-full overflow-y-auto flex flex-col" style={{ touchAction: 'pan-y' }}>
                 <div className="flex-1 px-3 md:px-10 pt-4 md:pt-[150px] pb-4 overflow-y-auto">
                   <div className="text-center mb-6 md:mb-8">
