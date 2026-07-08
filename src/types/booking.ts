@@ -16,3 +16,12 @@ export interface Booking {
   updated_at: string;
 }
 export type BookingInsert = Omit<Booking, 'id' | 'created_at' | 'updated_at'>;
+
+export interface BlockedSlot {
+  id: string;
+  blocked_date: string;
+  start_time: string;
+  end_time: string;
+  reason: string;
+  created_at: string;
+}

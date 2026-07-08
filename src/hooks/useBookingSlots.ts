@@ -1,12 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { generateTimeSlots } from '../lib/bookingUtils';
 import { fetchAllBookings } from '../lib/localStorageDb';
+import type { BlockedSlot } from '../types/booking';
 
 function getLocalDate(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const d = String(date.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
+}
+
+function getBlockedSlots(): BlockedSlot[] {
+  try {
+    return JSON.parse(localStorage.getItem('blocked_slots') || '[]');
+  } catch { return []; }
 }
 
 export function useBookingSlots({ duration }: { duration: number }) {
@@ -23,9 +30,9 @@ export function useBookingSlots({ duration }: { duration: number }) {
     if (!selectedDate) return;
     setIsLoading(true);
     try {
-      const bookings = fetchAllBookings();
+      const bookings = fetchAllBookings().filter(b => b.status !== 'cancelled');
       const booked = bookings.map(b => ({ start_time: b.start_time, end_time: b.end_time }));
-      const blocked: any[] = [];
+      const blocked = getBlockedSlots();
       const opening = '09:00';
       const closing = '18:00';
       const generated = generateTimeSlots(selectedDate, duration, opening, closing, booked, blocked);

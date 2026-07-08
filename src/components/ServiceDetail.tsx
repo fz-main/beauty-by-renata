@@ -73,7 +73,7 @@ export default function ServiceDetail({ activeService, onBack, lang: _lang, t }:
         {activeService.benefits && activeService.benefits.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
             className="glass-panel rounded-3xl p-6 md:p-10">
-            <div className="font-monument text-[10px] tracking-[0.25em] text-[#e5d3b3] mb-5">Co vám přinese</div>
+            <div className="font-monument text-[10px] tracking-[0.25em] text-[#e5d3b3] mb-5">{t.benefitsTitle || 'Co vám přinese'}</div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {activeService.benefits.map((b, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -89,7 +89,7 @@ export default function ServiceDetail({ activeService, onBack, lang: _lang, t }:
         {activeService.process && activeService.process.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
             className="glass-panel rounded-3xl p-6 md:p-10">
-            <div className="font-monument text-[10px] tracking-[0.25em] text-[#e5d3b3] mb-5">Průběh ošetření</div>
+            <div className="font-monument text-[10px] tracking-[0.25em] text-[#e5d3b3] mb-5">{t.processTitle || 'Průběh ošetření'}</div>
             <div className="flex flex-col gap-4">
               {activeService.process.map((step, i) => (
                 <div key={i} className="flex items-start gap-4">

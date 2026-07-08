@@ -22,10 +22,14 @@ export function generateTimeSlots(date: string, duration: number, opening: strin
   const now = new Date();
   const isToday = date === now.toISOString().split('T')[0];
   const currentMin = isToday ? now.getHours() * 60 + now.getMinutes() + 30 : 0;
+
+  // Check if entire day is blocked
+  const dayBlocked = blocked.some(b => b.blocked_date === date && b.start_time === '00:00' && b.end_time === '23:59');
+
   for (let t = start; t + duration <= end; t += duration) {
     const time = `${Math.floor(t/60).toString().padStart(2,'0')}:${(t%60).toString().padStart(2,'0')}`;
     const endTime = addMinutes(time, duration);
-    const isBlocked = blocked.some(b => b.blocked_date === date && timeToMinutes(b.start_time || '00:00') < t + duration && timeToMinutes(b.end_time || '23:59') > t);
+    const isBlocked = dayBlocked || blocked.some(b => b.blocked_date === date && timeToMinutes(b.start_time || '00:00') < t + duration && timeToMinutes(b.end_time || '23:59') > t);
     const isBooked = booked.some(b => timeToMinutes(b.start_time) < t + duration && timeToMinutes(b.end_time) > t);
     slots.push({
       time,
