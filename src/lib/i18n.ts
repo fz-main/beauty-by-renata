@@ -72,6 +72,7 @@ export const translations = {
       device: [{ name: 'Renata Birjukov', role: 'Kosmetička', exp: '5+ let', photo: '' }],
       other: [{ name: 'Renata Birjukov', role: 'Kosmetička', exp: '5+ let', photo: '' }]
     },
+    servicesTitle: 'Moje služby',
     testimonialsTitle: 'Co říkají naši klienti',
     galleryTitle: 'Galerie',
     testimonialsList: [
@@ -164,6 +165,7 @@ export const translations = {
       device: [{ name: 'Renata Birjukov', role: 'Cosmetician', exp: '5+ years', photo: '' }],
       other: [{ name: 'Renata Birjukov', role: 'Cosmetician', exp: '5+ years', photo: '' }]
     },
+    servicesTitle: 'My Services',
     testimonialsTitle: 'What our clients say',
     galleryTitle: 'Gallery',
     testimonialsList: [
@@ -256,6 +258,7 @@ export const translations = {
       device: [{ name: 'Renata Birjukov', role: 'Kosmetikerin', exp: '5+ Jahre', photo: '' }],
       other: [{ name: 'Renata Birjukov', role: 'Kosmetikerin', exp: '5+ Jahre', photo: '' }]
     },
+    servicesTitle: 'Meine Dienstleistungen',
     testimonialsTitle: 'Was unsere Kunden sagen',
     galleryTitle: 'Galerie',
     testimonialsList: [
